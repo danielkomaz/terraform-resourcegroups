@@ -28,12 +28,3 @@ variable "stack_name" {
   description = "Name of the stack this resource belongs to."
   type        = string
 }
-
-variable "tags" {
-  description = "Map of tags to be added to resources."
-  type        = map
-  default = { 
-        stack: "${var.stack_name}",
-        env:   "${var.env}",
-  }
-}
