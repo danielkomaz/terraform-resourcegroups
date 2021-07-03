@@ -3,6 +3,15 @@ stages:
   - plan
   - apply
 
+variables:
+  TF_ROOT: ${CI_PROJECT_DIR}
+
+cache:
+  key: "${TF_ROOT}"
+  paths:
+    - ${TF_ROOT}/.terraform/
+    - ${TF_ROOT}/.terraform.lock.hcl
+
 default:
   image:
     name: hashicorp/terraform:latest
@@ -19,6 +28,7 @@ default:
 validate:
   stage: validate
   script:
+    - cd ${TF_ROOT}
     - terraform validate
   except:
     refs:
@@ -27,6 +37,7 @@ validate:
 plan:
   stage: plan
   script:
+    - cd ${TF_ROOT}
     - terraform plan --out plan
   needs:
     - job: validate
@@ -36,12 +47,15 @@ plan:
   artifacts:
     paths:
       - plan
+    reports:
+      terraform: ${TF_ROOT}/plan.json
   environment:
     name: blog_production
 
 apply:
   stage: apply
   script:
+    - cd ${TF_ROOT}
     - terraform apply --auto-approve plan
   when: manual
   allow_failure: false
