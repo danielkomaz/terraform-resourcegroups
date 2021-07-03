@@ -14,5 +14,5 @@ resource "azurerm_resource_group" "rg" {
   name     = var.rg_name
   location = var.avail_zone
 
-  tags     = local.tags
+  tags = local.tags
 }
