@@ -12,15 +12,19 @@ init:
 
 validate:
   extends: .validate
+  needs:
+    - job: init
 
 build_blog_prod:
   extends: .build
+  needs:
+    - job: validate
   environment:
     name: blog_production
 
 deploy_blog_prod:
   extends: .deploy
-  dependencies:
-    - build_blog_prod
+  needs:
+    - job: build_blog_prod
   environment:
     name: blog_production
