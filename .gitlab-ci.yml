@@ -1,62 +1,36 @@
+include:
+  - template: Terraform/Base.latest.gitlab-ci.yml # https://gitlab.com/gitlab-org/gitlab/blob/master/lib/gitlab/ci/templates/Terraform/Base.latest.gitlab-ci.yml
+
 stages:
+  - init
   - validate
-  - plan
-  - apply
+  - build
+  - deploy
 
-variables:
-  TF_ROOT: ${CI_PROJECT_DIR}
-
-default:
-  image:
-    name: hashicorp/terraform:latest
-    entrypoint:
-      - /usr/bin/env
-      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-  before_script:
-    - terraform init
-  cache:
-    key: terraform
-    paths:
-      - .terraform
+init:
+  extends: .init
 
 validate:
-  stage: validate
-  script:
-    - cd ${TF_ROOT}
-    - terraform validate
-  except:
-    refs:
-      - master
+  extends: .validate
+  needs:
+    - job: init
 
-plan:
-  stage: plan
+build_blog_prod:
+  extends: .build
   script:
-    - cd ${TF_ROOT}
-    - terraform plan --out plan
+    - curl -L https://aka.ms/InstallAzureCli | bash
+    - az login --service-principal --username="${AZURE_APP_ID}" --password="${AZURE_CLIENT_SECRET}" --tenant=${TF_VAR_tenant_id}
   needs:
     - job: validate
-  only:
-    refs:
-      - master
-  artifacts:
-    paths:
-      - plan
-    reports:
-      terraform: ${TF_ROOT}/plan.json
   environment:
     name: blog_production
 
-apply:
-  stage: apply
+deploy_blog_prod:
+  extends: .deploy
   script:
-    - cd ${TF_ROOT}
-    - terraform apply --auto-approve plan
-  when: manual
-  allow_failure: false
+    - curl -L https://aka.ms/InstallAzureCli | bash
+    - az login --service-principal --username="${AZURE_APP_ID}" --password="${AZURE_CLIENT_SECRET}" --tenant=${TF_VAR_tenant_id}
   needs:
-    - job: plan
-  only:
-    refs:
-      - master
+    - job: build_blog_prod
   environment:
     name: blog_production
