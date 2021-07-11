@@ -1,12 +1,12 @@
-variable "tenant_id" {
-  description = "The tenant ID to use for the deployment"
-  type        = string
-}
+# variable "tenant_id" {
+#   description = "The tenant ID to use for the deployment"
+#   type        = string
+# }
 
-variable "subscription_id" {
-  description = "ID of the subscription to use for the deployment"
-  type        = string
-}
+# variable "subscription_id" {
+#   description = "ID of the subscription to use for the deployment"
+#   type        = string
+# }
 
 variable "rg_name" {
   description = "Name of the resource group. Write in capital letters (e.g.: DEV)"

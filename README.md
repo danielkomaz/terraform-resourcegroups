@@ -26,8 +26,6 @@ No modules.
 | <a name="input_env"></a> [env](#input\_env) | Name of the environment, used for Tags of resources. Usually on of the following: 'Development', 'Staging', 'Production' | `string` | n/a | yes |
 | <a name="input_rg_name"></a> [rg\_name](#input\_rg\_name) | Name of the resource group. Write in capital letters (e.g.: DEV) | `string` | n/a | yes |
 | <a name="input_stack_name"></a> [stack\_name](#input\_stack\_name) | Name of the stack this resource belongs to. | `string` | n/a | yes |
-| <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | ID of the subscription to use for the deployment | `string` | n/a | yes |
-| <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | The tenant ID to use for the deployment | `string` | n/a | yes |
 | <a name="input_avail_zone"></a> [avail\_zone](#input\_avail\_zone) | Name of the availability zone. (e.g.: 'West Europe') | `string` | `"West Europe"` | no |
 
 ## Outputs
